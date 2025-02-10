@@ -5,24 +5,22 @@ namespace FinancialAccountManagement.API.Data
 {
     public class FinancialAccountDbContext : DbContext
     {
+        public FinancialAccountDbContext(DbContextOptions<FinancialAccountDbContext> options)
+            : base(options)
+        {
+        }
+
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("your_connection_string_here");
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Call the seed method from the separate file
-            SeedData.Seed(modelBuilder);
+            SeedData.Seed(modelBuilder); // Ensure this method is correctly implemented.
 
             modelBuilder.Entity<Account>()
                 .HasMany(a => a.Transactions)
                 .WithOne(t => t.Account)
                 .HasForeignKey(t => t.AccountId);
         }
-
     }
 }

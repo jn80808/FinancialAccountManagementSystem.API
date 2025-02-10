@@ -4,7 +4,6 @@ using System.Text.Json.Serialization;
 
 namespace FinancialAccountManagement.API.Model.Domain
 {
-
     [Table("Transaction")]
     public class Transaction
     {
@@ -13,11 +12,16 @@ namespace FinancialAccountManagement.API.Model.Domain
 
         [ForeignKey("Account")]
         public int AccountId { get; set; }
+
+        [Required]
         public string TransactionType { get; set; } = string.Empty; // "Deposit" or "Withdrawal"
+
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
-        public DateTime TransactionDate { get; set; }
+
+        public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
 
         [JsonIgnore]
-        public Account? Account { get; set; } = null!; // Navigation property
+        public Account? Account { get; set; } //Navigation property
     }
 }

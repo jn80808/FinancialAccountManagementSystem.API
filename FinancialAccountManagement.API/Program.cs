@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 //FinancialAccount 
 builder.Services.AddDbContext<FinancialAccountDbContext>(option =>
 {
-    option.UseSqlServer(builder.Configuration.GetConnectionString("FinancialAccountConnectionStrings")); //from appsetting connection string
+    option.UseSqlServer(builder.Configuration.GetConnectionString("FinancialAccountConnectionString")); //from appsetting connection string
 });
 
 
