@@ -1,6 +1,8 @@
-﻿namespace FinancialAccountManagement.API.Model.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FinancialAccountManagement.API.Model.DTO
 {
-    public class TransactionDTO
+    public class TransactionDto
     {
         public int Id { get; set; }
         public int AccountId { get; set; }
@@ -8,4 +10,8 @@
         public decimal Amount { get; set; }
         public DateTime TransactionDate { get; set; }
     }
+
+ 
+
+
 }

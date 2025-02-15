@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FinancialAccountManagement.API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -67,16 +67,16 @@ namespace FinancialAccountManagement.API.Migrations
                 columns: new[] { "Id", "AccountId", "Amount", "TransactionDate", "TransactionType" },
                 values: new object[,]
                 {
-                    { 1, 1, 500.00m, new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8756), "Deposit" },
-                    { 2, 1, 200.00m, new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8784), "Withdrawal" },
-                    { 3, 2, 1000.00m, new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8787), "Deposit" },
-                    { 4, 2, 300.00m, new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8790), "Withdrawal" },
-                    { 5, 3, 700.00m, new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8793), "Deposit" },
-                    { 6, 3, 100.00m, new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8795), "Withdrawal" },
-                    { 7, 4, 2000.00m, new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8798), "Deposit" },
-                    { 8, 4, 500.00m, new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8800), "Withdrawal" },
-                    { 9, 5, 400.00m, new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8802), "Deposit" },
-                    { 10, 5, 150.00m, new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8805), "Withdrawal" }
+                    { 1, 1, 500.00m, new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5824), "Deposit" },
+                    { 2, 1, 200.00m, new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5837), "Withdrawal" },
+                    { 3, 2, 1000.00m, new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5839), "Deposit" },
+                    { 4, 2, 300.00m, new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5841), "Withdrawal" },
+                    { 5, 3, 700.00m, new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5843), "Deposit" },
+                    { 6, 3, 100.00m, new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5844), "Withdrawal" },
+                    { 7, 4, 2000.00m, new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5846), "Deposit" },
+                    { 8, 4, 500.00m, new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5848), "Withdrawal" },
+                    { 9, 5, 400.00m, new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5849), "Deposit" },
+                    { 10, 5, 150.00m, new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5851), "Withdrawal" }
                 });
 
             migrationBuilder.CreateIndex(

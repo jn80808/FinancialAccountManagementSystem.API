@@ -14,9 +14,11 @@ namespace FinancialAccountManagement.API.Model.Domain
         public int AccountId { get; set; }
 
         [Required]
+        [RegularExpression("Deposit|Withdrawal", ErrorMessage = "TransactionType must be either 'Deposit' or 'Withdrawal'")]
         public string TransactionType { get; set; } = string.Empty; // "Deposit" or "Withdrawal"
 
         [Column(TypeName = "decimal(18,2)")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Transaction amount must be greater than zero")]
         public decimal Amount { get; set; }
 
         public DateTime TransactionDate { get; set; } = DateTime.UtcNow;

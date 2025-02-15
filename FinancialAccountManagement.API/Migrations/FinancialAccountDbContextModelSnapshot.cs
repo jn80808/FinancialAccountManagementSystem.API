@@ -118,7 +118,7 @@ namespace FinancialAccountManagement.API.Migrations
                             Id = 1,
                             AccountId = 1,
                             Amount = 500.00m,
-                            TransactionDate = new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8756),
+                            TransactionDate = new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5824),
                             TransactionType = "Deposit"
                         },
                         new
@@ -126,7 +126,7 @@ namespace FinancialAccountManagement.API.Migrations
                             Id = 2,
                             AccountId = 1,
                             Amount = 200.00m,
-                            TransactionDate = new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8784),
+                            TransactionDate = new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5837),
                             TransactionType = "Withdrawal"
                         },
                         new
@@ -134,7 +134,7 @@ namespace FinancialAccountManagement.API.Migrations
                             Id = 3,
                             AccountId = 2,
                             Amount = 1000.00m,
-                            TransactionDate = new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8787),
+                            TransactionDate = new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5839),
                             TransactionType = "Deposit"
                         },
                         new
@@ -142,7 +142,7 @@ namespace FinancialAccountManagement.API.Migrations
                             Id = 4,
                             AccountId = 2,
                             Amount = 300.00m,
-                            TransactionDate = new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8790),
+                            TransactionDate = new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5841),
                             TransactionType = "Withdrawal"
                         },
                         new
@@ -150,7 +150,7 @@ namespace FinancialAccountManagement.API.Migrations
                             Id = 5,
                             AccountId = 3,
                             Amount = 700.00m,
-                            TransactionDate = new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8793),
+                            TransactionDate = new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5843),
                             TransactionType = "Deposit"
                         },
                         new
@@ -158,7 +158,7 @@ namespace FinancialAccountManagement.API.Migrations
                             Id = 6,
                             AccountId = 3,
                             Amount = 100.00m,
-                            TransactionDate = new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8795),
+                            TransactionDate = new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5844),
                             TransactionType = "Withdrawal"
                         },
                         new
@@ -166,7 +166,7 @@ namespace FinancialAccountManagement.API.Migrations
                             Id = 7,
                             AccountId = 4,
                             Amount = 2000.00m,
-                            TransactionDate = new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8798),
+                            TransactionDate = new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5846),
                             TransactionType = "Deposit"
                         },
                         new
@@ -174,7 +174,7 @@ namespace FinancialAccountManagement.API.Migrations
                             Id = 8,
                             AccountId = 4,
                             Amount = 500.00m,
-                            TransactionDate = new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8800),
+                            TransactionDate = new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5848),
                             TransactionType = "Withdrawal"
                         },
                         new
@@ -182,7 +182,7 @@ namespace FinancialAccountManagement.API.Migrations
                             Id = 9,
                             AccountId = 5,
                             Amount = 400.00m,
-                            TransactionDate = new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8802),
+                            TransactionDate = new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5849),
                             TransactionType = "Deposit"
                         },
                         new
@@ -190,7 +190,7 @@ namespace FinancialAccountManagement.API.Migrations
                             Id = 10,
                             AccountId = 5,
                             Amount = 150.00m,
-                            TransactionDate = new DateTime(2025, 2, 10, 22, 36, 18, 828, DateTimeKind.Local).AddTicks(8805),
+                            TransactionDate = new DateTime(2025, 2, 15, 19, 53, 46, 498, DateTimeKind.Local).AddTicks(5851),
                             TransactionType = "Withdrawal"
                         });
                 });

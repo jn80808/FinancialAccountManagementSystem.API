@@ -1,0 +1,22 @@
+﻿@FinancialAccountManagement.API_HostAddress = https://localhost:7259
+
+GET {{FinancialAccountManagement.API_HostAddress}}/api/account
+
+###
+
+GET {{FinancialAccountManagement.API_HostAddress}}/api/account/2
+
+###
+
+
+
+POST {{FinancialAccountManagement.API_HostAddress}}/api/account
+Content-Type: application/json
+
+{
+    "accountNumber": "ACC123",
+  "accountHolder": "Chiaki Kobayashi",
+  "balance": 1000.00
+}
+
+###

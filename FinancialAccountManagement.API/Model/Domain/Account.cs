@@ -16,8 +16,9 @@ namespace FinancialAccountManagement.API.Model.Domain
         public string AccountHolder { get; set; } = string.Empty;
 
         [Column(TypeName = "decimal(18,2)")]
+        [Range(0, double.MaxValue, ErrorMessage = "Balance cannot be negative")]
         public decimal Balance { get; set; }
 
-        public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+        public ICollection<Transaction>? Transactions { get; set; } = new List<Transaction>();
     }
 }
