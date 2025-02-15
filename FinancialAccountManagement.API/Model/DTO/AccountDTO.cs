@@ -8,4 +8,5 @@
         public decimal Balance { get; set; }
         public List<TransactionDTO> Transactions { get; set; } = new();
     }
+}
 

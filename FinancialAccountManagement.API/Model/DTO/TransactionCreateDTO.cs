@@ -1,6 +1,6 @@
 ﻿namespace FinancialAccountManagement.API.Model.DTO
 {
-    public class TransactionDTO
+    public class TransactionCreateDTO
     {
         public int Id { get; set; }
         public int AccountId { get; set; }
