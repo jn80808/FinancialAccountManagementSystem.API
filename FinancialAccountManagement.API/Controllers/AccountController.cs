@@ -101,35 +101,59 @@ namespace FinancialAccountManagement.API.Controllers
 
         // PUT: api/account/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAccount(int id, [FromBody] AccountUpdateDto dto)
+        public async Task<IActionResult> UpdateAccount(int id, [FromBody] AccountUpdateDto dto, CancellationToken cancellationToken)
         {
             var account = await _context.Accounts.FindAsync(id);
             if (account == null) return NotFound();
+
+            if (string.IsNullOrWhiteSpace(dto.AccountHolder))
+                return BadRequest("Account holder name cannot be empty.");
 
             if (dto.Balance < 0) return BadRequest("Balance cannot be negative.");
 
             account.AccountHolder = dto.AccountHolder;
             account.Balance = dto.Balance;
 
-            await _context.SaveChangesAsync();
-            return NoContent();
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return Ok(new AccountResponseDto
+            {
+                Id = account.Id,
+                AccountNumber = account.AccountNumber,
+                AccountHolder = account.AccountHolder,
+                Balance = account.Balance,
+                Transactions = new List<TransactionDto>() // Include as needed
+            });
         }
+
 
         // DELETE: api/account/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAccount(int id)
+        public async Task<IActionResult> DeleteAccount(int id, CancellationToken cancellationToken)
         {
-            var account = await _context.Accounts.Include(a => a.Transactions).FirstOrDefaultAsync(a => a.Id == id);
-            if (account == null) return NotFound();
+            var account = await _context.Accounts
+                .Where(a => a.Id == id)
+                .Select(a => new { a.Id, HasTransactions = a.Transactions.Any() }) // Only fetch needed data
+                .FirstOrDefaultAsync(cancellationToken);
 
-            if (account.Transactions.Any())
+            if (account == null)
             {
-                return BadRequest("Cannot delete account with existing transactions.");
+                return NotFound(new { message = "Account does not exist." });
             }
 
-            _context.Accounts.Remove(account);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            if (account.HasTransactions)
+            {
+                return BadRequest(new { message = "Cannot delete account with existing transactions." });
+            }
+
+            // Retrieve the account again (EF cannot delete from projection)
+            var accountToDelete = new Account { Id = id };
+            _context.Accounts.Attach(accountToDelete);
+            _context.Accounts.Remove(accountToDelete);
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return Ok(new { message = "Account successfully deleted." });
         }
     }
 }
