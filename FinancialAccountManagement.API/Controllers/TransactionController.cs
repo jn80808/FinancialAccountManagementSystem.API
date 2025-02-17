@@ -68,14 +68,27 @@ namespace FinancialAccountManagement.API.Controllers
         }
 
         //  POST: api/transactions - Create a new transaction (Deposit or Withdrawal)
+        // POST: api/transactions - Create a new transaction (Deposit or Withdrawal)
         [HttpPost]
         public async Task<ActionResult<TransactionDto>> CreateTransaction(TransactionCreateDto dto)
         {
             var account = await _context.Accounts.FindAsync(dto.AccountId);
             if (account == null) return NotFound("Account not found.");
 
-            if (dto.TransactionType == "Withdrawal" && account.Balance < dto.Amount)
-                return BadRequest("Insufficient balance.");
+            // Handle the business logic for Withdrawals
+            if (dto.TransactionType == "Withdrawal")
+            {
+                if (account.Balance < dto.Amount)
+                    return BadRequest("Insufficient balance for withdrawal.");
+
+                account.Balance -= dto.Amount;  // Subtract the amount from the account balance
+            }
+
+            // Handle the business logic for Deposits
+            if (dto.TransactionType == "Deposit")
+            {
+                account.Balance += dto.Amount;  // Add the amount to the account balance
+            }
 
             var transaction = new Transaction
             {
@@ -84,10 +97,6 @@ namespace FinancialAccountManagement.API.Controllers
                 Amount = dto.Amount,
                 TransactionDate = DateTime.UtcNow
             };
-
-            // Update Account Balance
-            if (dto.TransactionType == "Deposit") account.Balance += dto.Amount;
-            else if (dto.TransactionType == "Withdrawal") account.Balance -= dto.Amount;
 
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
@@ -102,6 +111,7 @@ namespace FinancialAccountManagement.API.Controllers
             });
         }
 
+
         // PUT: api/transactions/{id} - Update an existing transaction
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTransaction(int id, TransactionCreateDto dto)
@@ -113,16 +123,24 @@ namespace FinancialAccountManagement.API.Controllers
             if (account == null) return NotFound("Account not found.");
 
             // Reverse the original transaction effect on balance
-            if (transaction.TransactionType == "Deposit") account.Balance -= transaction.Amount;
-            else if (transaction.TransactionType == "Withdrawal") account.Balance += transaction.Amount;
+            if (transaction.TransactionType == "Deposit")
+                account.Balance -= transaction.Amount;
+            else if (transaction.TransactionType == "Withdrawal")
+                account.Balance += transaction.Amount;
 
-            // Update transaction
+            // Validate Withdrawal Balance Before Reapplying
+            if (dto.TransactionType == "Withdrawal" && account.Balance < dto.Amount)
+                return BadRequest("Insufficient balance for withdrawal.");
+
+            // Update the transaction details
             transaction.TransactionType = dto.TransactionType;
             transaction.Amount = dto.Amount;
 
-            // Apply new transaction effect on balance
-            if (dto.TransactionType == "Deposit") account.Balance += dto.Amount;
-            else if (dto.TransactionType == "Withdrawal") account.Balance -= dto.Amount;
+            // Apply the new transaction effect on balance
+            if (dto.TransactionType == "Deposit")
+                account.Balance += dto.Amount;
+            else if (dto.TransactionType == "Withdrawal")
+                account.Balance -= dto.Amount;
 
             await _context.SaveChangesAsync();
             return NoContent();
@@ -139,8 +157,10 @@ namespace FinancialAccountManagement.API.Controllers
             if (account == null) return NotFound("Account not found.");
 
             // Reverse transaction effect before deleting
-            if (transaction.TransactionType == "Deposit") account.Balance -= transaction.Amount;
-            else if (transaction.TransactionType == "Withdrawal") account.Balance += transaction.Amount;
+            if (transaction.TransactionType == "Deposit")
+                account.Balance -= transaction.Amount;
+            else if (transaction.TransactionType == "Withdrawal")
+                account.Balance += transaction.Amount;
 
             _context.Transactions.Remove(transaction);
             await _context.SaveChangesAsync();
