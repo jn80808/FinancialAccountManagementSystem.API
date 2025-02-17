@@ -110,9 +110,6 @@ namespace FinancialAccountManagement.API.Controllers
             });
         }
 
-
-        // PUT: api/transactions/{id} - Update an existing transaction
-        // PUT: api/transactions/{id} - Update an existing transaction
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTransaction(int id, TransactionCreateDto dto)
         {
@@ -137,19 +134,20 @@ namespace FinancialAccountManagement.API.Controllers
             if (dto.TransactionType == "Withdrawal" && account.Balance < dto.Amount)
                 return BadRequest($"Insufficient balance. Available balance: {account.Balance}, requested withdrawal: {dto.Amount}");
 
-            // Update the transaction details
-            transaction.TransactionType = dto.TransactionType;
-            transaction.Amount = dto.Amount;
-
             // Apply the new transaction effect on balance
             if (dto.TransactionType == "Deposit")
                 account.Balance += dto.Amount;
             else if (dto.TransactionType == "Withdrawal")
                 account.Balance -= dto.Amount;
 
+            // Update the transaction details
+            transaction.TransactionType = dto.TransactionType;
+            transaction.Amount = dto.Amount;
+
             await _context.SaveChangesAsync();
             return Ok(new { message = "Transaction updated successfully.", transactionId = transaction.Id });
         }
+
 
 
         // DELETE: api/transactions/{id} - Delete a transaction

@@ -77,3 +77,17 @@ Content-Type: application/json
 }
 
 ###
+
+
+
+PUT {{FinancialAccountManagement.API_HostAddress}}/api/transaction/12
+Content-Type: application/json
+
+{
+  "accountId": 1,
+  "transactionType": "Deposit",
+  "amount": 50.00
+}
+
+###
+
