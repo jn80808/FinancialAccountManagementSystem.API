@@ -36,9 +36,44 @@ DELETE {{FinancialAccountManagement.API_HostAddress}}/api/account/6
 ###
 
 
-
-
-
 GET {{FinancialAccountManagement.API_HostAddress}}/api/transaction
+
+###
+
+GET {{FinancialAccountManagement.API_HostAddress}}/api/transaction/8
+
+###
+
+POST {{FinancialAccountManagement.API_HostAddress}}/api/transaction
+Content-Type: application/json
+
+{
+  "accountId": 1,
+  "transactionType": "Withdrawal",
+  "amount": 50.00
+}
+
+###
+
+
+POST {{FinancialAccountManagement.API_HostAddress}}/api/transaction
+Content-Type: application/json
+
+{
+  "accountId": 1,
+  "transactionType": "Deposit", 
+  "amount": 3000.00
+}
+
+###
+
+PUT {{FinancialAccountManagement.API_HostAddress}}/api/transaction/11
+Content-Type: application/json
+
+{
+  "accountId": 1,
+  "transactionType": "Withdrawal",
+  "amount": 3500.00
+}
 
 ###

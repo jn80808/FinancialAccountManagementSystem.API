@@ -67,7 +67,6 @@ namespace FinancialAccountManagement.API.Controllers
             }).ToList();
         }
 
-        //  POST: api/transactions - Create a new transaction (Deposit or Withdrawal)
         // POST: api/transactions - Create a new transaction (Deposit or Withdrawal)
         [HttpPost]
         public async Task<ActionResult<TransactionDto>> CreateTransaction(TransactionCreateDto dto)
@@ -113,14 +112,20 @@ namespace FinancialAccountManagement.API.Controllers
 
 
         // PUT: api/transactions/{id} - Update an existing transaction
+        // PUT: api/transactions/{id} - Update an existing transaction
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTransaction(int id, TransactionCreateDto dto)
         {
+            if (dto == null)
+                return BadRequest("Invalid request. Transaction data is required.");
+
             var transaction = await _context.Transactions.FindAsync(id);
-            if (transaction == null) return NotFound("Transaction not found.");
+            if (transaction == null)
+                return NotFound($"Transaction with ID {id} not found.");
 
             var account = await _context.Accounts.FindAsync(dto.AccountId);
-            if (account == null) return NotFound("Account not found.");
+            if (account == null)
+                return NotFound($"Account with ID {dto.AccountId} not found.");
 
             // Reverse the original transaction effect on balance
             if (transaction.TransactionType == "Deposit")
@@ -130,7 +135,7 @@ namespace FinancialAccountManagement.API.Controllers
 
             // Validate Withdrawal Balance Before Reapplying
             if (dto.TransactionType == "Withdrawal" && account.Balance < dto.Amount)
-                return BadRequest("Insufficient balance for withdrawal.");
+                return BadRequest($"Insufficient balance. Available balance: {account.Balance}, requested withdrawal: {dto.Amount}");
 
             // Update the transaction details
             transaction.TransactionType = dto.TransactionType;
@@ -143,8 +148,9 @@ namespace FinancialAccountManagement.API.Controllers
                 account.Balance -= dto.Amount;
 
             await _context.SaveChangesAsync();
-            return NoContent();
+            return Ok(new { message = "Transaction updated successfully.", transactionId = transaction.Id });
         }
+
 
         // DELETE: api/transactions/{id} - Delete a transaction
         [HttpDelete("{id}")]
