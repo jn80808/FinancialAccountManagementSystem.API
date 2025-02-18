@@ -10,5 +10,8 @@ namespace FinancialAccountManagement.API.Repository
         Task<decimal> GetTotalBalanceAsync();
         Task<IEnumerable<Account>> GetAccountsBelowThresholdAsync(decimal threshold);
         Task<IEnumerable<Account>> GetTopAccountsByBalanceAsync(int topCount);
+
+        Task<bool> DoesAccountExistAsync(int accountId);
+
     }
 }

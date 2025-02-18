@@ -95,3 +95,19 @@ Content-Type: application/json
 DELETE {{FinancialAccountManagement.API_HostAddress}}/api/transaction/12
 
 ###
+
+GET {{FinancialAccountManagement.API_HostAddress}}/api/statistics/low-balance/2
+
+###
+
+GET {{FinancialAccountManagement.API_HostAddress}}/api/reports/low-balance/0
+
+###
+
+GET {{FinancialAccountManagement.API_HostAddress}}/api/reports/low-balance/0
+
+###
+
+GET {{FinancialAccountManagement.API_HostAddress}}/api/reports/transactions/2
+
+###

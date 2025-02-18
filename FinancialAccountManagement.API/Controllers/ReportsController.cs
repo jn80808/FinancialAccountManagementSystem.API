@@ -1,48 +1,82 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using FinancialAccountManagement.API.Model.Domain;
-using FinancialAccountManagement.API.Repository;
+﻿using FinancialAccountManagement.API.Repository;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinancialAccountManagement.API.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class ReportsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class StatisticsController : ControllerBase
+    private readonly IRepository _repository;
+
+    // Add constructor for dependency injection
+    public ReportsController(IRepository repository)
     {
-        private readonly IRepository _repository;
+        _repository = repository;
+    }
 
-        public StatisticsController(IRepository repository)
+    [HttpGet("transactions/{accountId}")]
+    public async Task<IActionResult> GetTransactions(int accountId)
+    {
+        if (accountId <= 0)
         {
-            _repository = repository;
+            return BadRequest(new { message = "Invalid account ID. It must be greater than zero." });
         }
 
-        [HttpGet("transactions/{accountId}")]
-        public async Task<IActionResult> GetTransactions(int accountId)
+        var accountExists = await _repository.DoesAccountExistAsync(accountId);
+        if (!accountExists)
         {
-            var transactions = await _repository.GetTransactionsByAccountIdAsync(accountId);
-            return Ok(transactions);
+            return NotFound(new { message = $"Account with ID {accountId} does not exist." });
         }
 
-        [HttpGet("total-balance")]
-        public async Task<IActionResult> GetTotalBalance()
+        var transactions = await _repository.GetTransactionsByAccountIdAsync(accountId);
+
+        if (transactions == null || !transactions.Any())
         {
-            var totalBalance = await _repository.GetTotalBalanceAsync();
-            return Ok(totalBalance);
+            return NotFound(new { message = $"No transactions found for account ID {accountId}." });
         }
 
-        [HttpGet("low-balance/{threshold}")]
-        public async Task<IActionResult> GetAccountsBelowThreshold(decimal threshold)
+        return Ok(new { message = "Transactions retrieved successfully.", transactions });
+    }
+
+    [HttpGet("total-balance")]
+    public async Task<IActionResult> GetTotalBalance()
+    {
+        var totalBalance = await _repository.GetTotalBalanceAsync();
+        return Ok(new { message = "Total balance retrieved successfully.", totalBalance });
+    }
+
+    [HttpGet("low-balance/{threshold}")]
+    public async Task<IActionResult> GetAccountsBelowThreshold(decimal threshold)
+    {
+        if (threshold < 0)
         {
-            var accounts = await _repository.GetAccountsBelowThresholdAsync(threshold);
-            return Ok(accounts);
+            return BadRequest(new { message = "Threshold value must be a positive number." });
         }
 
-        [HttpGet("top-accounts/{count}")]
-        public async Task<IActionResult> GetTopAccountsByBalance(int count)
+        var accounts = await _repository.GetAccountsBelowThresholdAsync(threshold);
+
+        if (!accounts.Any())
         {
-            var topAccounts = await _repository.GetTopAccountsByBalanceAsync(count);
-            return Ok(topAccounts);
+            return NotFound(new { message = $"No accounts found below the threshold of {threshold}." });
         }
+
+        return Ok(new { message = "Accounts retrieved successfully.", accounts });
+    }
+
+    [HttpGet("top-accounts/{count}")]
+    public async Task<IActionResult> GetTopAccountsByBalance(int count)
+    {
+        if (count <= 0)
+        {
+            return BadRequest(new { message = "Count must be greater than zero." });
+        }
+
+        var topAccounts = await _repository.GetTopAccountsByBalanceAsync(count);
+
+        if (!topAccounts.Any())
+        {
+            return NotFound(new { message = "No accounts found." });
+        }
+
+        return Ok(new { message = $"Top {count} accounts retrieved successfully.", topAccounts });
     }
 }

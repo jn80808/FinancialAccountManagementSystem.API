@@ -23,6 +23,11 @@ namespace FinancialAccountManagement.API.Repository
                                  .Where(t => t.AccountId == accountId)
                                  .ToListAsync();
         }
+        public async Task<bool> DoesAccountExistAsync(int accountId)
+        {
+            return await _context.Accounts.AnyAsync(a => a.Id == accountId);
+        }
+
 
         public async Task<decimal> GetTotalBalanceAsync()
         {
