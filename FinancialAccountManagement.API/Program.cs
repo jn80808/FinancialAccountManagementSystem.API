@@ -1,4 +1,5 @@
 using FinancialAccountManagement.API.Data;
+using FinancialAccountManagement.API.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,10 @@ builder.Services.AddDbContext<FinancialAccountDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("FinancialAccountConnectionString")); //from appsetting connection string
 });
+
+// Register the repository
+builder.Services.AddScoped<IRepository, Repository>();
+
 
 
 var app = builder.Build();
