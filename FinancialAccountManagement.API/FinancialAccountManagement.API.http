@@ -111,3 +111,15 @@ GET {{FinancialAccountManagement.API_HostAddress}}/api/reports/low-balance/0
 GET {{FinancialAccountManagement.API_HostAddress}}/api/reports/transactions/2
 
 ###
+
+GET {{FinancialAccountManagement.API_HostAddress}}/api/reports/total-balance
+
+###
+
+GET {{FinancialAccountManagement.API_HostAddress}}/api/reports/low-balance/1500
+
+###
+
+GET {{FinancialAccountManagement.API_HostAddress}}/api/reports/top-accounts/5
+
+###
