@@ -110,11 +110,15 @@ namespace FinancialAccountManagement.API.Controllers
             });
         }
 
+        // PUT: api/transactions/{id} - Update an existing transaction
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTransaction(int id, TransactionCreateDto dto)
         {
             if (dto == null)
                 return BadRequest("Invalid request. Transaction data is required.");
+
+            if (dto.Amount <= 0)
+                return BadRequest("Amount must be greater than zero.");
 
             var transaction = await _context.Transactions.FindAsync(id);
             if (transaction == null)
@@ -124,29 +128,41 @@ namespace FinancialAccountManagement.API.Controllers
             if (account == null)
                 return NotFound($"Account with ID {dto.AccountId} not found.");
 
-            // Reverse the original transaction effect on balance
-            if (transaction.TransactionType == "Deposit")
-                account.Balance -= transaction.Amount;
-            else if (transaction.TransactionType == "Withdrawal")
-                account.Balance += transaction.Amount;
+            // Calculate new balance by reversing the original transaction
+            decimal newBalance = account.Balance;
 
-            // Validate Withdrawal Balance Before Reapplying
-            if (dto.TransactionType == "Withdrawal" && account.Balance < dto.Amount)
-                return BadRequest($"Insufficient balance. Available balance: {account.Balance}, requested withdrawal: {dto.Amount}");
+            if (transaction.TransactionType == "Deposit")
+                newBalance -= transaction.Amount;
+            else if (transaction.TransactionType == "Withdrawal")
+                newBalance += transaction.Amount;
+
+            // Fix: Only block if reversing a withdrawal results in a negative balance
+            if (transaction.TransactionType == "Withdrawal" && newBalance < 0)
+                return BadRequest($"Reversing the previous withdrawal would cause a negative balance: {newBalance}");
+
+            // Validate new withdrawal before applying the update
+            if (dto.TransactionType == "Withdrawal" && newBalance < dto.Amount)
+                return BadRequest($"Insufficient balance after update. Available balance: {newBalance}, requested withdrawal: {dto.Amount}");
 
             // Apply the new transaction effect on balance
             if (dto.TransactionType == "Deposit")
-                account.Balance += dto.Amount;
+                newBalance += dto.Amount;
             else if (dto.TransactionType == "Withdrawal")
-                account.Balance -= dto.Amount;
+                newBalance -= dto.Amount;
 
-            // Update the transaction details
+            // Final validation before saving
+            if (newBalance < 0)
+                return BadRequest($"Transaction update would result in a negative balance: {newBalance}");
+
+            // Update the transaction details and save
             transaction.TransactionType = dto.TransactionType;
             transaction.Amount = dto.Amount;
+            account.Balance = newBalance;
 
             await _context.SaveChangesAsync();
-            return Ok(new { message = "Transaction updated successfully.", transactionId = transaction.Id });
+            return Ok(new { message = "Transaction updated successfully.", transactionId = transaction.Id, newBalance });
         }
+
 
 
 
@@ -169,7 +185,7 @@ namespace FinancialAccountManagement.API.Controllers
             _context.Transactions.Remove(transaction);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new { message = "Transaction deleted successfully and account balance updated." });
         }
     }
 }

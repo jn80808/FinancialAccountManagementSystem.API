@@ -50,7 +50,7 @@ Content-Type: application/json
 {
   "accountId": 1,
   "transactionType": "Withdrawal",
-  "amount": 50.00
+  "amount": 5500.00
 }
 
 ###
@@ -73,7 +73,7 @@ Content-Type: application/json
 {
   "accountId": 1,
   "transactionType": "Withdrawal",
-  "amount": 3500.00
+  "amount": 50080.00
 }
 
 ###
@@ -86,8 +86,12 @@ Content-Type: application/json
 {
   "accountId": 1,
   "transactionType": "Deposit",
-  "amount": 50.00
+  "amount": 9000.00
 }
 
 ###
 
+
+DELETE {{FinancialAccountManagement.API_HostAddress}}/api/transaction/12
+
+###
