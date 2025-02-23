@@ -4,6 +4,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Authors>Joy Ng</Authors>
+    <Copyright>© 2025 Joy Ng. All Rights Reserved.</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
